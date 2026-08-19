@@ -1,0 +1,2767 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoachAI — Kelajak ta'limi</title>
+<meta name="description" content="CoachAI — sun'iy intellekt yordamida zamonaviy va shaxsiylashtirilgan ta'lim platformasi.">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    font-family:Inter,Arial,sans-serif;
+    background:#06100d;
+    color:#eefaf5;
+    overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
+button,input,textarea{font-family:inherit}
+
+:root{
+    --bg:#06100d;
+    --bg2:#091713;
+    --card:#0b1c15;
+    --card2:#0e241b;
+    --line:rgba(255,255,255,.08);
+    --green:#25e58a;
+    --green2:#10b96b;
+    --cyan:#35d9c4;
+    --white:#f2fff9;
+    --muted:#8da39a;
+    --purple:#7c5cff;
+    --blue:#3b82f6;
+}
+
+body:before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-5;
+    background:
+      radial-gradient(circle at 15% 15%,rgba(27,120,91,.18),transparent 30%),
+      radial-gradient(circle at 90% 30%,rgba(24,110,90,.12),transparent 30%),
+      radial-gradient(circle at 50% 100%,rgba(35,105,82,.12),transparent 35%);
+}
+
+::-webkit-scrollbar{width:7px}
+::-webkit-scrollbar-track{background:#06100d}
+::-webkit-scrollbar-thumb{background:#1e5b43;border-radius:20px}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.nav{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:72px;
+    z-index:1000;
+    background:rgba(5,15,12,.78);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.nav-inner{
+    max-width:1240px;
+    height:100%;
+    margin:auto;
+    padding:0 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:800;
+    font-size:19px;
+}
+
+.logo-icon{
+    width:34px;
+    height:34px;
+    display:grid;
+    place-items:center;
+    border-radius:10px;
+    background:linear-gradient(135deg,#21d17d,#12a968);
+    box-shadow:0 0 25px rgba(37,229,138,.22);
+}
+
+.logo-icon:before{content:"✦";font-size:18px;color:#07120e}
+
+.logo span{color:#42e69a}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:28px;
+}
+
+.nav-links a{
+    color:#91a79e;
+    font-size:12px;
+    transition:.2s;
+}
+
+.nav-links a:hover{color:#fff}
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.nav-login{
+    color:#93a79f;
+    font-size:12px;
+}
+
+.nav-btn{
+    padding:9px 16px;
+    border-radius:9px;
+    background:#22d27d;
+    color:#04110b;
+    font-size:12px;
+    font-weight:800;
+}
+
+.mobile-btn{
+    display:none;
+    border:0;
+    background:transparent;
+    color:#fff;
+    font-size:25px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    min-height:820px;
+    padding:145px 24px 80px;
+    max-width:1240px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    align-items:center;
+    gap:70px;
+}
+
+.hero-kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 12px;
+    border:1px solid rgba(37,229,138,.18);
+    border-radius:30px;
+    background:rgba(37,229,138,.06);
+    color:#55eaa3;
+    font-size:10px;
+    margin-bottom:20px;
+}
+
+.hero-kicker i{
+    width:6px;
+    height:6px;
+    background:#2be38c;
+    border-radius:50%;
+    box-shadow:0 0 10px #2be38c;
+}
+
+.hero h1{
+    font-size:clamp(45px,6vw,76px);
+    line-height:.98;
+    letter-spacing:-4px;
+    max-width:700px;
+    margin-bottom:24px;
+}
+
+.hero h1 span{
+    color:#3fe29a;
+}
+
+.hero p{
+    color:#91a59d;
+    font-size:15px;
+    line-height:1.8;
+    max-width:570px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:11px;
+    margin-top:30px;
+}
+
+.primary{
+    border:0;
+    padding:13px 20px;
+    border-radius:9px;
+    background:linear-gradient(135deg,#27df88,#16b96b);
+    color:#04120c;
+    font-size:12px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 10px 35px rgba(24,211,122,.15);
+    transition:.25s;
+}
+
+.primary:hover{
+    transform:translateY(-3px);
+    box-shadow:0 15px 40px rgba(24,211,122,.25);
+}
+
+.secondary{
+    padding:12px 18px;
+    border-radius:9px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.025);
+    color:#d8e7e1;
+    font-size:12px;
+    cursor:pointer;
+}
+
+.hero-mini-stats{
+    display:flex;
+    gap:28px;
+    margin-top:42px;
+}
+
+.hero-mini-stats div{
+    display:flex;
+    flex-direction:column;
+}
+
+.hero-mini-stats strong{
+    font-size:20px;
+    color:#effff8;
+}
+
+.hero-mini-stats span{
+    font-size:9px;
+    color:#647b71;
+}
+
+/* HERO APP PREVIEW */
+
+.hero-preview{
+    position:relative;
+    min-height:520px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.glow{
+    position:absolute;
+    width:400px;
+    height:400px;
+    border-radius:50%;
+    background:#18c879;
+    filter:blur(130px);
+    opacity:.12;
+}
+
+.app-window{
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:570px;
+    min-height:400px;
+    background:#091811;
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:18px;
+    box-shadow:0 35px 90px rgba(0,0,0,.55);
+    overflow:hidden;
+    transform:perspective(1200px) rotateY(-4deg) rotateX(2deg);
+}
+
+.window-top{
+    height:38px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 13px;
+    background:#08150f;
+}
+
+.window-dots{display:flex;gap:5px}
+.window-dots i{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#385249;
+}
+
+.window-title{
+    font-size:8px;
+    color:#688177;
+}
+
+.preview-body{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    min-height:365px;
+}
+
+.preview-side{
+    padding:15px 9px;
+    border-right:1px solid rgba(255,255,255,.05);
+}
+
+.preview-logo{
+    color:#39d88e;
+    font-size:11px;
+    font-weight:800;
+    margin-bottom:18px;
+}
+
+.side-item{
+    padding:8px 8px;
+    margin-bottom:3px;
+    border-radius:6px;
+    color:#657c72;
+    font-size:8px;
+}
+
+.side-item.active{
+    background:rgba(37,229,138,.08);
+    color:#4ce59d;
+}
+
+.preview-main{padding:18px}
+
+.preview-title{
+    font-size:20px;
+    line-height:1.1;
+    font-weight:800;
+    margin-bottom:5px;
+}
+
+.preview-sub{
+    color:#698077;
+    font-size:7px;
+    margin-bottom:18px;
+}
+
+.dashboard-card{
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:10px;
+    background:#0c1d15;
+    padding:14px;
+    margin-bottom:10px;
+}
+
+.dashboard-card h4{
+    font-size:9px;
+    margin-bottom:10px;
+}
+
+.progress-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:7px;
+    color:#72877e;
+    margin-bottom:5px;
+}
+
+.progress{
+    height:5px;
+    background:#132b20;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.progress span{
+    display:block;
+    width:72%;
+    height:100%;
+    background:#27d983;
+}
+
+.preview-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+}
+
+.preview-level{
+    border:1px solid rgba(255,255,255,.05);
+    border-radius:8px;
+    padding:10px 7px;
+    background:#0c1d15;
+}
+
+.preview-level b{
+    display:block;
+    font-size:9px;
+    margin-bottom:4px;
+}
+
+.preview-level small{
+    color:#668078;
+    font-size:6px;
+}
+
+.floating{
+    position:absolute;
+    z-index:4;
+    background:rgba(10,25,19,.9);
+    border:1px solid rgba(255,255,255,.08);
+    backdrop-filter:blur(15px);
+    border-radius:10px;
+    padding:10px 13px;
+    box-shadow:0 20px 40px rgba(0,0,0,.3);
+    animation:float 4s ease-in-out infinite;
+}
+
+.floating.one{top:55px;right:-15px}
+.floating.two{bottom:45px;left:-20px;animation-delay:-2s}
+
+.floating strong{
+    display:block;
+    font-size:9px;
+}
+
+.floating small{
+    display:block;
+    color:#60766c;
+    font-size:7px;
+    margin-top:2px;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-9px)}
+}
+
+/* =========================
+   SECTION
+========================= */
+
+.section{
+    max-width:1200px;
+    margin:auto;
+    padding:110px 24px;
+}
+
+.section-head{
+    text-align:center;
+    max-width:700px;
+    margin:0 auto 55px;
+}
+
+.label{
+    color:#3bdd93;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:2px;
+    margin-bottom:13px;
+}
+
+.section-head h2{
+    font-size:clamp(35px,5vw,54px);
+    letter-spacing:-2.5px;
+    line-height:1.05;
+}
+
+.section-head h2 span{
+    color:#38dc91;
+}
+
+.section-head p{
+    color:#80948c;
+    font-size:13px;
+    line-height:1.8;
+    margin-top:16px;
+}
+
+/* =========================
+   FEATURES
+========================= */
+
+.features{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:13px;
+}
+
+.feature{
+    min-height:260px;
+    padding:23px;
+    background:linear-gradient(145deg,#0b1d15,#08140f);
+    border:1px solid var(--line);
+    border-radius:17px;
+    transition:.3s;
+    position:relative;
+    overflow:hidden;
+}
+
+.feature:hover{
+    transform:translateY(-6px);
+    border-color:rgba(37,229,138,.18);
+    box-shadow:0 20px 50px rgba(0,0,0,.22);
+}
+
+.feature.big{grid-column:span 2}
+
+.feature-icon{
+    width:42px;
+    height:42px;
+    display:grid;
+    place-items:center;
+    border-radius:11px;
+    background:rgba(37,229,138,.08);
+    margin-bottom:17px;
+    font-size:19px;
+}
+
+.feature h3{
+    font-size:17px;
+    margin-bottom:8px;
+}
+
+.feature p{
+    color:#7d9189;
+    font-size:11px;
+    line-height:1.7;
+}
+
+.feature-visual{
+    position:absolute;
+    right:22px;
+    bottom:20px;
+    width:45%;
+}
+
+.tags{
+    display:flex;
+    gap:5px;
+    flex-wrap:wrap;
+    margin-top:18px;
+}
+
+.tags span{
+    padding:5px 7px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.04);
+    color:#71847c;
+    border-radius:5px;
+    font-size:7px;
+}
+
+.wave{
+    height:55px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+}
+
+.wave i{
+    width:4px;
+    border-radius:10px;
+    background:#27d98a;
+    animation:wave 1s infinite ease-in-out;
+}
+
+.wave i:nth-child(1){height:15px}
+.wave i:nth-child(2){height:27px;animation-delay:-.1s}
+.wave i:nth-child(3){height:45px;animation-delay:-.2s}
+.wave i:nth-child(4){height:58px;animation-delay:-.3s}
+.wave i:nth-child(5){height:35px;animation-delay:-.4s}
+.wave i:nth-child(6){height:24px;animation-delay:-.5s}
+.wave i:nth-child(7){height:14px;animation-delay:-.6s}
+
+@keyframes wave{
+    50%{transform:scaleY(.35)}
+}
+
+/* =========================
+   HOW
+========================= */
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+.step{
+    text-align:center;
+    padding:25px 18px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:#091812;
+    position:relative;
+}
+
+.step-number{
+    font-size:9px;
+    color:#3ada91;
+    letter-spacing:2px;
+    margin-bottom:14px;
+}
+
+.step-icon{
+    width:58px;
+    height:58px;
+    margin:auto auto 16px;
+    display:grid;
+    place-items:center;
+    border-radius:17px;
+    background:rgba(37,229,138,.07);
+    border:1px solid rgba(37,229,138,.1);
+    font-size:24px;
+}
+
+.step h3{font-size:15px;margin-bottom:7px}
+.step p{color:#70837b;font-size:10px;line-height:1.6}
+
+/* =========================
+   MENTORS
+========================= */
+
+.mentors{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.mentor{
+    background:#091812;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:19px;
+    transition:.3s;
+}
+
+.mentor:hover{
+    transform:translateY(-5px);
+    border-color:rgba(37,229,138,.2);
+}
+
+.avatar{
+    width:52px;
+    height:52px;
+    border-radius:15px;
+    display:grid;
+    place-items:center;
+    margin-bottom:15px;
+    font-size:20px;
+    font-weight:800;
+}
+
+.a1{background:#152e22;color:#4ce39b}
+.a2{background:#172b3c;color:#6caeff}
+.a3{background:#2c2617;color:#f1bd59}
+.a4{background:#2b1e32;color:#c08cff}
+
+.mentor h3{font-size:16px}
+.mentor p{color:#70857c;font-size:10px;margin-top:3px}
+
+.online{
+    color:#32d98c;
+    font-size:8px;
+    margin-top:12px;
+}
+
+.mentor-tags{
+    display:flex;
+    gap:5px;
+    margin-top:13px;
+}
+
+.mentor-tags span{
+    padding:5px 7px;
+    background:rgba(255,255,255,.035);
+    color:#6f827a;
+    border-radius:5px;
+    font-size:7px;
+}
+
+/* =========================
+   LIBRARY
+========================= */
+
+.library{
+    background:#07140f;
+    border-top:1px solid rgba(255,255,255,.04);
+    border-bottom:1px solid rgba(255,255,255,.04);
+}
+
+.books{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:13px;
+}
+
+.book{
+    overflow:hidden;
+    border:1px solid var(--line);
+    border-radius:13px;
+    background:#0b1b14;
+    transition:.3s;
+}
+
+.book:hover{
+    transform:translateY(-5px);
+}
+
+.book-cover{
+    height:190px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:15px;
+}
+
+.book:nth-child(1) .book-cover{
+    background:linear-gradient(145deg,#19372c,#10271e);
+}
+.book:nth-child(2) .book-cover{
+    background:linear-gradient(145deg,#f3f0df,#cbc6aa);
+    color:#242820;
+}
+.book:nth-child(3) .book-cover{
+    background:linear-gradient(145deg,#f4f1d9,#c9c59f);
+    color:#25281f;
+}
+.book:nth-child(4) .book-cover{
+    background:linear-gradient(145deg,#6a4d38,#3c2b22);
+}
+
+.book-cover small{
+    font-size:7px;
+    letter-spacing:2px;
+    margin-bottom:13px;
+}
+
+.book-cover strong{
+    font-size:24px;
+    letter-spacing:-1px;
+}
+
+.book-cover b{
+    margin-top:8px;
+    font-size:10px;
+}
+
+.book-info{
+    padding:13px;
+}
+
+.book-info h3{font-size:11px}
+.book-info p{font-size:8px;color:#667a71;margin-top:4px}
+
+.book-status{
+    display:inline-block;
+    margin-top:9px;
+    padding:4px 6px;
+    border-radius:5px;
+    background:rgba(37,229,138,.07);
+    color:#37d991;
+    font-size:7px;
+}
+
+/* =========================
+   PRODUCT SHOWCASE
+========================= */
+
+.showcase{
+    display:grid;
+    grid-template-columns:1fr 1.1fr;
+    align-items:center;
+    gap:80px;
+}
+
+.showcase h2{
+    font-size:clamp(38px,5vw,57px);
+    line-height:1.05;
+    letter-spacing:-2.5px;
+}
+
+.showcase h2 span{color:#38dc91}
+
+.showcase p{
+    color:#80958c;
+    font-size:13px;
+    line-height:1.8;
+    margin:20px 0;
+}
+
+.check-list{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+    margin:25px 0 30px;
+}
+
+.check-list div{
+    font-size:10px;
+    color:#92a59e;
+}
+
+.check-list b{
+    color:#38dd93;
+    margin-right:6px;
+}
+
+.mock{
+    min-height:380px;
+    border:1px solid var(--line);
+    border-radius:19px;
+    background:#091812;
+    box-shadow:0 30px 70px rgba(0,0,0,.3);
+    overflow:hidden;
+}
+
+.mock-head{
+    height:43px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 15px;
+    border-bottom:1px solid var(--line);
+}
+
+.mock-head span{font-size:9px;color:#657a71}
+
+.mock-body{
+    display:grid;
+    grid-template-columns:115px 1fr;
+    min-height:337px;
+}
+
+.mock-side{
+    padding:14px 9px;
+    border-right:1px solid var(--line);
+}
+
+.mock-side b{
+    display:block;
+    color:#35db90;
+    font-size:10px;
+    margin-bottom:15px;
+}
+
+.mock-side div{
+    padding:8px;
+    color:#61766d;
+    font-size:7px;
+    border-radius:6px;
+}
+
+.mock-side .sel{
+    background:rgba(37,229,138,.07);
+    color:#3bdd94;
+}
+
+.mock-content{
+    padding:16px;
+}
+
+.mock-content h3{font-size:17px}
+.mock-content small{font-size:7px;color:#62766e}
+
+.mock-cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+    margin-top:18px;
+}
+
+.mock-card{
+    padding:12px 8px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:#0d2018;
+}
+
+.mock-card b{
+    display:block;
+    color:#39dd91;
+    font-size:9px;
+}
+
+.mock-card span{
+    display:block;
+    color:#71867c;
+    font-size:6px;
+    margin-top:4px;
+}
+
+/* =========================
+   CHAT DEMO
+========================= */
+
+.chat-demo{
+    max-width:850px;
+    margin:auto;
+    border:1px solid var(--line);
+    border-radius:20px;
+    overflow:hidden;
+    background:#08150f;
+    box-shadow:0 35px 80px rgba(0,0,0,.35);
+}
+
+.chat-header{
+    height:65px;
+    padding:12px 17px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border-bottom:1px solid var(--line);
+}
+
+.chat-avatar{
+    width:37px;
+    height:37px;
+    display:grid;
+    place-items:center;
+    border-radius:11px;
+    background:linear-gradient(135deg,#24dc87,#0fa96a);
+    color:#03100a;
+    font-weight:900;
+}
+
+.chat-header strong{display:block;font-size:11px}
+.chat-header small{display:block;color:#657a71;font-size:7px}
+.chat-online{margin-left:auto;color:#32dc8d;font-size:8px}
+
+.messages{
+    min-height:340px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:13px;
+}
+
+.msg{
+    max-width:65%;
+    padding:11px 13px;
+    border-radius:7px 13px 13px 13px;
+    background:#10231a;
+    color:#b7c7c0;
+    font-size:10px;
+    line-height:1.6;
+}
+
+.msg.user{
+    align-self:flex-end;
+    border-radius:13px 7px 13px 13px;
+    background:#12442f;
+    color:#d7eee4;
+}
+
+.question{
+    margin-top:10px;
+    padding:12px;
+    border:1px solid rgba(37,229,138,.12);
+    border-radius:10px;
+    background:rgba(37,229,138,.035);
+}
+
+.question strong{
+    display:block;
+    color:#effff8;
+    margin-bottom:10px;
+}
+
+.answers{
+    display:flex;
+    gap:6px;
+}
+
+.answers button{
+    flex:1;
+    border:1px solid rgba(255,255,255,.07);
+    background:#0b1c15;
+    color:#94a69f;
+    padding:7px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:8px;
+}
+
+.answers button:hover{
+    border-color:#29dc8c;
+    color:#fff;
+}
+
+.chat-input{
+    display:flex;
+    margin:0 15px 15px;
+    height:45px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.chat-input input{
+    flex:1;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:#fff;
+    padding:0 13px;
+    font-size:10px;
+}
+
+.chat-input button{
+    width:42px;
+    border:0;
+    background:#20d27e;
+    color:#03110a;
+    font-weight:900;
+}
+
+/* =========================
+   PROJECT SECTION
+========================= */
+
+.project-box{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.project-card{
+    padding:27px;
+    min-height:250px;
+    border:1px solid var(--line);
+    border-radius:17px;
+    background:#091812;
+}
+
+.project-card h3{
+    font-size:18px;
+    margin-bottom:9px;
+}
+
+.project-card p{
+    color:#71857d;
+    font-size:10px;
+    line-height:1.7;
+}
+
+.project-ui{
+    margin-top:20px;
+    display:grid;
+    gap:7px;
+}
+
+.project-row{
+    padding:10px;
+    border:1px solid rgba(255,255,255,.05);
+    border-radius:7px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    color:#82958d;
+    font-size:8px;
+}
+
+.project-row span{
+    color:#39db91;
+}
+
+/* =========================
+   CTA
+========================= */
+
+.cta{
+    padding:120px 24px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    border-top:1px solid rgba(255,255,255,.04);
+}
+
+.cta:before{
+    content:"";
+    position:absolute;
+    width:500px;
+    height:300px;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    background:#16c978;
+    filter:blur(150px);
+    opacity:.09;
+}
+
+.cta-content{
+    position:relative;
+    z-index:2;
+}
+
+.cta h2{
+    font-size:clamp(44px,6vw,70px);
+    line-height:1;
+    letter-spacing:-3px;
+}
+
+.cta h2 span{color:#38dd91}
+
+.cta p{
+    color:#81958c;
+    font-size:13px;
+    margin:20px auto 28px;
+}
+
+.cta small{
+    display:block;
+    color:#50645c;
+    font-size:8px;
+    margin-top:15px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    border-top:1px solid rgba(255,255,255,.05);
+    background:#040b08;
+    padding:55px 24px 20px;
+}
+
+.footer-inner{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    gap:60px;
+}
+
+.footer-brand{
+    max-width:300px;
+}
+
+.footer-brand p{
+    color:#60736c;
+    font-size:10px;
+    line-height:1.7;
+    margin-top:15px;
+}
+
+.footer-links{
+    display:flex;
+    gap:70px;
+}
+
+.footer-links div{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+.footer-links h4{
+    font-size:10px;
+    color:#d9e6e1;
+    margin-bottom:5px;
+}
+
+.footer-links a{
+    color:#61756d;
+    font-size:9px;
+}
+
+.footer-links a:hover{color:#38dd91}
+
+.footer-bottom{
+    max-width:1200px;
+    margin:45px auto 0;
+    padding-top:17px;
+    border-top:1px solid rgba(255,255,255,.05);
+    display:flex;
+    justify-content:space-between;
+    color:#3f514a;
+    font-size:8px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:2000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.active{display:flex}
+
+.modal-bg{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.78);
+    backdrop-filter:blur(10px);
+}
+
+.modal-box{
+    position:relative;
+    z-index:2;
+    width:min(650px,100%);
+    background:#0b1913;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 40px 100px rgba(0,0,0,.6);
+}
+
+.close{
+    position:absolute;
+    right:15px;
+    top:12px;
+    border:0;
+    background:rgba(255,255,255,.05);
+    color:#fff;
+    width:30px;
+    height:30px;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.modal-box h2{
+    font-size:25px;
+    margin-bottom:8px;
+}
+
+.modal-box p{
+    color:#758980;
+    font-size:11px;
+}
+
+.video{
+    margin-top:20px;
+    height:280px;
+    border-radius:13px;
+    background:
+      radial-gradient(circle at center,rgba(37,229,138,.12),transparent 50%),
+      #06100d;
+    border:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+}
+
+.play{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:#20d27e;
+    color:#03110a;
+}
+
+/* =========================
+   SCROLL REVEAL
+========================= */
+
+.reveal{
+    opacity:0;
+    transform:translateY(25px);
+    transition:.7s ease;
+}
+
+.reveal.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1000px){
+
+    .nav-links,.nav-right{display:none}
+    .mobile-btn{display:block}
+
+    .hero{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+
+    .hero p{margin:auto}
+    .hero-buttons,.hero-mini-stats{justify-content:center}
+
+    .hero-preview{
+        max-width:650px;
+        width:100%;
+        margin:auto;
+    }
+
+    .features{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .feature.big{grid-column:span 2}
+
+    .steps{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .mentors{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .books{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .showcase{
+        grid-template-columns:1fr;
+    }
+
+    .project-box{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:650px){
+
+    .hero{
+        padding-top:120px;
+    }
+
+    .hero h1{
+        font-size:46px;
+        letter-spacing:-2.5px;
+    }
+
+    .hero-buttons{
+        flex-direction:column;
+    }
+
+    .hero-buttons button,
+    .hero-buttons a{
+        width:100%;
+    }
+
+    .hero-mini-stats{
+        gap:18px;
+    }
+
+    .app-window{
+        transform:none;
+    }
+
+    .floating.one{
+        right:-5px;
+    }
+
+    .floating.two{
+        left:-5px;
+    }
+
+    .features{
+        grid-template-columns:1fr;
+    }
+
+    .feature.big{
+        grid-column:span 1;
+    }
+
+    .feature-visual{
+        position:relative;
+        right:auto;
+        bottom:auto;
+        width:100%;
+        margin-top:20px;
+    }
+
+    .steps{
+        grid-template-columns:1fr;
+    }
+
+    .mentors{
+        grid-template-columns:1fr;
+    }
+
+    .books{
+        grid-template-columns:1fr;
+    }
+
+    .book-cover{
+        height:220px;
+    }
+
+    .check-list{
+        grid-template-columns:1fr;
+    }
+
+    .project-box{
+        grid-template-columns:1fr;
+    }
+
+    .footer-inner{
+        flex-direction:column;
+    }
+
+    .footer-links{
+        flex-wrap:wrap;
+        gap:35px;
+    }
+
+    .footer-bottom{
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .preview-body,
+    .mock-body{
+        grid-template-columns:80px 1fr;
+    }
+
+    .preview-title{
+        font-size:15px;
+    }
+
+    .preview-grid,
+    .mock-cards{
+        grid-template-columns:1fr 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<header class="nav">
+<div class="nav-inner">
+
+<a href="#home" class="logo">
+    <div class="logo-icon"></div>
+    <div>Coach<span>AI</span></div>
+</a>
+
+<nav class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#features">AI Coach</a>
+    <a href="#library">Kitob kutubxonasi</a>
+    <a href="#levels">100 Level</a>
+    <a href="#project">Project</a>
+</nav>
+
+<div class="nav-right">
+    <a href="#login" class="nav-login">Kirish</a>
+    <a href="#start" class="nav-btn">Boshlash →</a>
+</div>
+
+<button class="mobile-btn" onclick="toggleMobile()">☰</button>
+
+</div>
+</header>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero" id="home">
+
+<div>
+
+    <div class="hero-kicker">
+        <i></i>
+        AI TA'LIM PLATFORMASI
+    </div>
+
+    <h1>
+        Bilimlarni biz bilan
+        <span>yanada oson va qiziqarli</span>
+        o'rganing
+    </h1>
+
+    <p>
+        CoachAI — o'quvchilar uchun yaratilgan zamonaviy
+        sun'iy intellekt platformasi. Fanlarni o'rganing,
+        AI mentor bilan suhbatlashing, kitoblarni o'qing,
+        topshiriqlarni bajaring va bilim darajangizni
+        bosqichma-bosqich oshiring.
+    </p>
+
+    <div class="hero-buttons">
+        <a href="#start" class="primary">🚀 AI bilan boshlang</a>
+        <button class="secondary" onclick="openModal()">▶ Ko'proq bilish</button>
+    </div>
+
+    <div class="hero-mini-stats">
+        <div>
+            <strong>24/7</strong>
+            <span>AI mentor</span>
+        </div>
+
+        <div>
+            <strong>100+</strong>
+            <span>Level va topshiriqlar</span>
+        </div>
+
+        <div>
+            <strong>∞</strong>
+            <span>O'rganish imkoniyati</span>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="hero-preview">
+
+<div class="glow"></div>
+
+<div class="app-window">
+
+    <div class="window-top">
+        <div class="window-dots">
+            <i></i><i></i><i></i>
+        </div>
+        <div class="window-title">CoachAI — Student Dashboard</div>
+        <span></span>
+    </div>
+
+    <div class="preview-body">
+
+        <aside class="preview-side">
+
+            <div class="preview-logo">CoachAI</div>
+
+            <div class="side-item active">⌂ Home</div>
+            <div class="side-item">✦ AI Coach</div>
+            <div class="side-item">▣ Kitob</div>
+            <div class="side-item">♟ 100 Level</div>
+            <div class="side-item">◈ Project</div>
+
+        </aside>
+
+        <main class="preview-main">
+
+            <div class="preview-title">
+                Bilimlarni biz bilan
+                yanada oson va qiziqarli o'rganing
+            </div>
+
+            <div class="preview-sub">
+                Sizning shaxsiy AI ustozingiz har kuni siz bilan.
+            </div>
+
+            <div class="dashboard-card">
+
+                <h4>Kunlik maqsadlar</h4>
+
+                <div class="progress-row">
+                    <span>Bugungi dars</span>
+                    <span>3 / 5</span>
+                </div>
+
+                <div class="progress">
+                    <span></span>
+                </div>
+
+                <div class="progress-row" style="margin-top:8px">
+                    <span>Haftalik natija</span>
+                    <span>72%</span>
+                </div>
+
+                <div class="progress">
+                    <span style="width:72%"></span>
+                </div>
+
+            </div>
+
+            <div class="preview-grid">
+
+                <div class="preview-level">
+                    <b>Level 1</b>
+                    <small>Sonli ifodalar</small>
+                </div>
+
+                <div class="preview-level">
+                    <b>Level 2</b>
+                    <small>Algebra</small>
+                </div>
+
+                <div class="preview-level">
+                    <b>Level 3</b>
+                    <small>Geometriya</small>
+                </div>
+
+                <div class="preview-level">
+                    <b>Level 4</b>
+                    <small>Kasrlar</small>
+                </div>
+
+                <div class="preview-level">
+                    <b>Level 5</b>
+                    <small>Tenglamalar</small>
+                </div>
+
+                <div class="preview-level">
+                    <b>Level 6</b>
+                    <small>Masalalar</small>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<div class="floating one">
+    <strong>✓ Kunlik maqsad bajarildi</strong>
+    <small>Bugungi progress: 80%</small>
+</div>
+
+<div class="floating two">
+    <strong>✦ AI Mentor online</strong>
+    <small>Sizga yordam berishga tayyor</small>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     FEATURES
+========================= -->
+
+<section class="section" id="features">
+
+<div class="section-head">
+    <div class="label">COACHAI IMKONIYATLARI</div>
+
+    <h2>
+        Ta'limni
+        <span>aqlliroq qiling.</span>
+    </h2>
+
+    <p>
+        CoachAI o'quvchini oddiy chatbot kabi emas,
+        haqiqiy ta'lim jarayoni orqali rivojlantirish
+        uchun yaratilgan.
+    </p>
+</div>
+
+
+<div class="features">
+
+<div class="feature big reveal">
+
+    <div class="feature-icon">🧠</div>
+
+    <h3>Shaxsiy AI ustoz</h3>
+
+    <p>
+        CoachAI o'quvchining sinfi, fani, mavzusi,
+        bilim darajasi va tanlangan qiyinchilik
+        darajasiga mos javob beradi.
+    </p>
+
+    <div class="feature-visual">
+        <div style="font-size:8px;color:#6f827a;margin-bottom:5px">
+            O'quvchi darajasi
+        </div>
+
+        <div class="progress">
+            <span style="width:78%"></span>
+        </div>
+
+        <div class="tags">
+            <span>7-sinf</span>
+            <span>Matematika</span>
+            <span>O'rta</span>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="feature reveal">
+
+    <div class="feature-icon">🎤</div>
+
+    <h3>Ovozli AI suhbat</h3>
+
+    <p>
+        Yozish shart emas. O'quvchi AI mentor
+        bilan ovoz orqali suhbatlashishi mumkin.
+    </p>
+
+    <div class="wave">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+
+</div>
+
+
+<div class="feature reveal">
+
+    <div class="feature-icon">📚</div>
+
+    <h3>Kitob kutubxonasi</h3>
+
+    <p>
+        Maktab darsliklari va boshqa o'quv
+        materiallarini bitta joyda saqlash va o'qish.
+    </p>
+
+    <div class="tags">
+        <span>Biologiya</span>
+        <span>Algebra</span>
+        <span>7-sinf</span>
+    </div>
+
+</div>
+
+
+<div class="feature reveal">
+
+    <div class="feature-icon">🎯</div>
+
+    <h3>100 Level tizimi</h3>
+
+    <p>
+        O'quvchi bosqichma-bosqich level o'tib,
+        o'z bilimini rivojlantiradi.
+    </p>
+
+    <div class="tags">
+        <span>Level 1</span>
+        <span>Level 25</span>
+        <span>Level 50</span>
+        <span>Level 100</span>
+    </div>
+
+</div>
+
+
+<div class="feature reveal">
+
+    <div class="feature-icon">📊</div>
+
+    <h3>Progress va statistika</h3>
+
+    <p>
+        O'quvchi o'z natijalarini, bajarilgan
+        topshiriqlarni va rivojlanish jarayonini ko'radi.
+    </p>
+
+    <div class="feature-visual">
+        <div class="progress">
+            <span style="width:86%"></span>
+        </div>
+
+        <div class="tags">
+            <span>86% progress</span>
+            <span>+120 XP</span>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="feature big reveal">
+
+    <div class="feature-icon">🚀</div>
+
+    <h3>Project Builder</h3>
+
+    <p>
+        O'quvchilar o'z loyihalarini yaratishi,
+        g'oyalarini rivojlantirishi va AI yordamida
+        loyiha ustida ishlashi mumkin.
+    </p>
+
+    <div class="tags">
+        <span>G'oya</span>
+        <span>Reja</span>
+        <span>AI yordam</span>
+        <span>Project</span>
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     HOW IT WORKS
+========================= -->
+
+<section class="section" id="how">
+
+<div class="section-head">
+    <div class="label">QANDAY ISHLAYDI?</div>
+
+    <h2>
+        Bir necha qadamda
+        <span>o'rganishni boshlang.</span>
+    </h2>
+
+    <p>
+        CoachAI sizni boshlang'ich darajadan
+        yuqoriroq bilim darajasiga olib boradi.
+    </p>
+</div>
+
+
+<div class="steps">
+
+<div class="step reveal">
+    <div class="step-number">01</div>
+    <div class="step-icon">🎓</div>
+    <h3>Sinfingizni tanlang</h3>
+    <p>
+        O'qiyotgan sinfingizni belgilang.
+    </p>
+</div>
+
+<div class="step reveal">
+    <div class="step-number">02</div>
+    <div class="step-icon">📖</div>
+    <h3>Fan va mavzu</h3>
+    <p>
+        Kerakli fan va mavzuni tanlang.
+    </p>
+</div>
+
+<div class="step reveal">
+    <div class="step-number">03</div>
+    <div class="step-icon">👩‍🏫</div>
+    <h3>AI mentor</h3>
+    <p>
+        O'zingizga mos AI ustoz bilan suhbatlashing.
+    </p>
+</div>
+
+<div class="step reveal">
+    <div class="step-number">04</div>
+    <div class="step-icon">🚀</div>
+    <h3>Levelni oshiring</h3>
+    <p>
+        Savollarni bajaring va keyingi levelga o'ting.
+    </p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     MENTORS
+========================= -->
+
+<section class="section" id="mentors">
+
+<div class="section-head">
+    <div class="label">AI MENTORLAR</div>
+
+    <h2>
+        Har bir fan uchun
+        <span>AI ustoz.</span>
+    </h2>
+
+    <p>
+        O'zingizga kerakli mentorni tanlang
+        va o'rganishni boshlang.
+    </p>
+</div>
+
+
+<div class="mentors">
+
+<div class="mentor reveal">
+    <div class="avatar a1">M</div>
+    <h3>Malika</h3>
+    <p>Matematika mentori</p>
+    <div class="online">● Online</div>
+    <div class="mentor-tags">
+        <span>Algebra</span>
+        <span>Geometriya</span>
+    </div>
+</div>
+
+<div class="mentor reveal">
+    <div class="avatar a2">D</div>
+    <h3>David</h3>
+    <p>Dasturlash mentori</p>
+    <div class="online">● Online</div>
+    <div class="mentor-tags">
+        <span>Python</span>
+        <span>Code</span>
+    </div>
+</div>
+
+<div class="mentor reveal">
+    <div class="avatar a3">K</div>
+    <h3>Kamola</h3>
+    <p>Kimyo mentori</p>
+    <div class="online">● Online</div>
+    <div class="mentor-tags">
+        <span>Kimyo</span>
+        <span>Laboratoriya</span>
+    </div>
+</div>
+
+<div class="mentor reveal">
+    <div class="avatar a4">J</div>
+    <h3>Jasur</h3>
+    <p>Tarix mentori</p>
+    <div class="online">● Online</div>
+    <div class="mentor-tags">
+        <span>Tarix</span>
+        <span>Geografiya</span>
+    </div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     LIBRARY
+========================= -->
+
+<section class="library" id="library">
+
+<div class="section">
+
+<div class="section-head">
+    <div class="label">KITOBLAR KUTUBXONASI</div>
+
+    <h2>
+        Barcha kitoblar
+        <span>bitta joyda.</span>
+    </h2>
+
+    <p>
+        Darsliklarni o'qing, mavzularni toping
+        va ular asosida AI bilan o'rganing.
+    </p>
+</div>
+
+
+<div class="books">
+
+<div class="book reveal">
+    <div class="book-cover">
+        <small>BIOLOGIYA</small>
+        <strong>BIOLOGIYA</strong>
+        <b>7-SINF</b>
+    </div>
+    <div class="book-info">
+        <h3>Biologiya — 7-sinf</h3>
+        <p>Maktab darsligi</p>
+        <span class="book-status">AI uchun tayyor</span>
+    </div>
+</div>
+
+
+<div class="book reveal">
+    <div class="book-cover">
+        <small>ALGEBRA</small>
+        <strong>ALGEBRA</strong>
+        <b>7-SINF</b>
+    </div>
+    <div class="book-info">
+        <h3>Algebra — 7-sinf</h3>
+        <p>Matematika darsligi</p>
+        <span class="book-status">AI uchun tayyor</span>
+    </div>
+</div>
+
+
+<div class="book reveal">
+    <div class="book-cover">
+        <small>ALGEBRA</small>
+        <strong>ALGEBRA</strong>
+        <b>7-SINF</b>
+    </div>
+    <div class="book-info">
+        <h3>Algebra qo'llanma</h3>
+        <p>Qo'shimcha material</p>
+        <span class="book-status">AI uchun tayyor</span>
+    </div>
+</div>
+
+
+<div class="book reveal">
+    <div class="book-cover">
+        <small>ONA TILI</small>
+        <strong>ONA TILI</strong>
+        <b>7-SINF</b>
+    </div>
+    <div class="book-info">
+        <h3>Ona tili — 7-sinf</h3>
+        <p>O'quv darsligi</p>
+        <span class="book-status">AI uchun tayyor</span>
+    </div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     LEVELS
+========================= -->
+
+<section class="section" id="levels">
+
+<div class="section-head">
+    <div class="label">100 LEVEL</div>
+
+    <h2>
+        Har bir bilim
+        <span>yangi bosqich.</span>
+    </h2>
+
+    <p>
+        Level tizimi o'quvchini doimiy ravishda
+        o'rganishga va o'z natijasini yaxshilashga undaydi.
+    </p>
+</div>
+
+
+<div class="showcase">
+
+<div>
+
+    <h2>
+        Level 1 dan
+        <span>Level 100 gacha.</span>
+    </h2>
+
+    <p>
+        Har bir levelda yangi mavzular, savollar
+        va topshiriqlar mavjud. To'g'ri javoblar,
+        mashqlar va darslar orqali XP yig'ing
+        va keyingi bosqichni oching.
+    </p>
+
+    <div class="check-list">
+        <div><b>✓</b> XP tizimi</div>
+        <div><b>✓</b> Level progress</div>
+        <div><b>✓</b> Kunlik maqsadlar</div>
+        <div><b>✓</b> Natijalar statistikasi</div>
+        <div><b>✓</b> Mavzu bo'yicha testlar</div>
+        <div><b>✓</b> AI tushuntirishlari</div>
+    </div>
+
+    <a href="#start" class="primary">
+        Levelni boshlash →
+    </a>
+
+</div>
+
+
+<div class="mock reveal">
+
+    <div class="mock-head">
+        <span>CoachAI / 100 Level</span>
+        <span>XP 2,450</span>
+    </div>
+
+    <div class="mock-body">
+
+        <div class="mock-side">
+            <b>CoachAI</b>
+            <div class="sel">Level</div>
+            <div>AI Coach</div>
+            <div>Kitoblar</div>
+            <div>Project</div>
+        </div>
+
+        <div class="mock-content">
+
+            <h3>Level 1 — Boshlang'ich</h3>
+            <small>Keyingi levelga o'tish uchun 80 XP kerak.</small>
+
+            <div class="mock-cards">
+
+                <div class="mock-card">
+                    <b>✓</b>
+                    <span>Sonli ifodalar</span>
+                </div>
+
+                <div class="mock-card">
+                    <b>✓</b>
+                    <span>Amallar tartibi</span>
+                </div>
+
+                <div class="mock-card">
+                    <b>✓</b>
+                    <span>Kasrlar</span>
+                </div>
+
+                <div class="mock-card">
+                    <b>→</b>
+                    <span>Tenglamalar</span>
+                </div>
+
+                <div class="mock-card">
+                    <b>🔒</b>
+                    <span>Algebra</span>
+                </div>
+
+                <div class="mock-card">
+                    <b>🔒</b>
+                    <span>Geometriya</span>
+                </div>
+
+            </div>
+
+            <div style="margin-top:18px">
+                <div style="display:flex;justify-content:space-between;font-size:7px;color:#6f827a;margin-bottom:5px">
+                    <span>Progress</span>
+                    <span>72%</span>
+                </div>
+
+                <div class="progress">
+                    <span style="width:72%"></span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     CHAT DEMO
+========================= -->
+
+<section class="section" id="ai-chat">
+
+<div class="section-head">
+    <div class="label">AI COACH</div>
+
+    <h2>
+        Savol bering.
+        <span>CoachAI tushuntiradi.</span>
+    </h2>
+
+    <p>
+        Noto'g'ri javob berganingizda ham CoachAI
+        shunchaki javobni aytmaydi — xatoni tushuntiradi.
+    </p>
+</div>
+
+
+<div class="chat-demo reveal">
+
+    <div class="chat-header">
+
+        <div class="chat-avatar">✦</div>
+
+        <div>
+            <strong>Malika — AI Mentor</strong>
+            <small>Matematika · 7-sinf · Sonli ifodalar</small>
+        </div>
+
+        <div class="chat-online">● Online</div>
+
+    </div>
+
+
+    <div class="messages" id="messages">
+
+        <div class="msg">
+            Salom! 👋 Bugun sonli ifodalarni
+            birgalikda o'rganamiz. Tayyormisan?
+        </div>
+
+        <div class="msg user">
+            Ha, tayyorman.
+        </div>
+
+        <div class="msg">
+            Ajoyib! Unda boshladik. 🎯
+
+            <div class="question">
+                <strong>5 + 3 × 2 = ?</strong>
+
+                <div class="answers">
+                    <button onclick="answer(this)">11</button>
+                    <button onclick="answer(this)">16</button>
+                    <button onclick="answer(this)">13</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="chat-input">
+
+        <input
+            id="chatInput"
+            placeholder="CoachAI'ga savol yozing..."
+        >
+
+        <button onclick="sendMessage()">↑</button>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     PROJECT
+========================= -->
+
+<section class="section" id="project">
+
+<div class="section-head">
+    <div class="label">PROJECT BUILDER</div>
+
+    <h2>
+        G'oyangizni
+        <span>loyihaga aylantiring.</span>
+    </h2>
+
+    <p>
+        O'quvchilar o'z g'oyalarini yaratishi,
+        rejalashtirishi va AI yordamida rivojlantirishi mumkin.
+    </p>
+</div>
+
+
+<div class="project-box">
+
+<div class="project-card reveal">
+
+    <div class="feature-icon">💡</div>
+
+    <h3>G'oyadan loyiha sari</h3>
+
+    <p>
+        AI yordamida loyiha g'oyasini aniqlang,
+        maqsadlarni yozing, reja tuzing va
+        loyihani bosqichma-bosqich amalga oshiring.
+    </p>
+
+    <div class="project-ui">
+
+        <div class="project-row">
+            Loyiha g'oyasi
+            <span>✓</span>
+        </div>
+
+        <div class="project-row">
+            Maqsadlar
+            <span>✓</span>
+        </div>
+
+        <div class="project-row">
+            Reja
+            <span>✓</span>
+        </div>
+
+        <div class="project-row">
+            AI yordam
+            <span>→</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="project-card reveal">
+
+    <div class="feature-icon">🚀</div>
+
+    <h3>O'zingizni sinab ko'ring</h3>
+
+    <p>
+        Faqat dars emas. CoachAI o'quvchini
+        mustaqil fikrlashga, muammo yechishga
+        va yangi g'oyalar yaratishga ham undaydi.
+    </p>
+
+    <div class="tags" style="margin-top:22px">
+        <span>Creative Thinking</span>
+        <span>Problem Solving</span>
+        <span>AI</span>
+        <span>Research</span>
+        <span>Project</span>
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     FINAL CTA
+========================= -->
+
+<section class="cta" id="start">
+
+<div class="cta-content">
+
+    <div class="label">
+        KELAJAK TA'LIMI BUGUNDAN BOSHLANADI
+    </div>
+
+    <h2>
+        CoachAI bilan
+        <span>o'rganishni boshlang.</span>
+    </h2>
+
+    <p>
+        AI mentor, kitoblar, 100 level, progress
+        va project imkoniyatlari — barchasi bitta platformada.
+    </p>
+
+    <!-- Django loyihangizga moslab URLni almashtirishingiz mumkin -->
+    <a href="/register/" class="primary">
+        🚀 CoachAI'ni boshlash →
+    </a>
+
+    <small>
+        Bepul boshlang · AI mentor · Smart Learning · 100 Level
+    </small>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+<div class="footer-inner">
+
+<div class="footer-brand">
+
+    <a href="#home" class="logo">
+        <div class="logo-icon"></div>
+        <div>Coach<span>AI</span></div>
+    </a>
+
+    <p>
+        Har bir o'quvchi uchun zamonaviy,
+        shaxsiylashtirilgan va aqlli ta'lim platformasi.
+    </p>
+
+</div>
+
+
+<div class="footer-links">
+
+<div>
+    <h4>CoachAI</h4>
+    <a href="#features">Imkoniyatlar</a>
+    <a href="#ai-chat">AI Coach</a>
+    <a href="#levels">100 Level</a>
+    <a href="#project">Project</a>
+</div>
+
+<div>
+    <h4>Ta'lim</h4>
+    <a href="#library">Kitoblar</a>
+    <a href="#mentors">Mentorlar</a>
+    <a href="#how">Qanday ishlaydi?</a>
+</div>
+
+<div>
+    <h4>Platforma</h4>
+    <a href="/login/">Kirish</a>
+    <a href="/register/">Ro'yxatdan o'tish</a>
+    <a href="/chat/">AI Chat</a>
+    <a href="/library/">Kutubxona</a>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="footer-bottom">
+    <span>© <span id="year"></span> CoachAI. Barcha huquqlar himoyalangan.</span>
+    <span>✦ Made for the future of education</span>
+</div>
+
+</footer>
+
+
+<!-- =========================
+     MODAL
+========================= -->
+
+<div class="modal" id="modal">
+
+<div class="modal-bg" onclick="closeModal()"></div>
+
+<div class="modal-box">
+
+<button class="close" onclick="closeModal()">×</button>
+
+<h2>CoachAI qanday ishlaydi?</h2>
+
+<p>
+CoachAI — o'quvchi bilan suhbatlashadigan,
+savollar beradigan, javoblarni tekshiradigan
+va mavzuni tushuntiradigan AI ta'lim yordamchisi.
+</p>
+
+<div class="video">
+
+<div class="play">▶</div>
+
+<div style="font-size:10px;color:#63766e">
+    CoachAI Demo
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   YEAR
+========================= */
+
+document.getElementById("year").textContent =
+    new Date().getFullYear();
+
+
+/* =========================
+   MOBILE
+========================= */
+
+function toggleMobile(){
+
+    const links=document.querySelector(".nav-links");
+    const right=document.querySelector(".nav-right");
+
+    if(links.style.display==="flex"){
+        links.style.display="";
+        right.style.display="";
+        return;
+    }
+
+    links.style.display="flex";
+    links.style.position="fixed";
+    links.style.top="72px";
+    links.style.left="15px";
+    links.style.right="15px";
+    links.style.padding="20px";
+    links.style.flexDirection="column";
+    links.style.alignItems="flex-start";
+    links.style.background="#091812";
+    links.style.border="1px solid rgba(255,255,255,.08)";
+    links.style.borderRadius="12px";
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+function openModal(){
+    document.getElementById("modal").classList.add("active");
+    document.body.style.overflow="hidden";
+}
+
+function closeModal(){
+    document.getElementById("modal").classList.remove("active");
+    document.body.style.overflow="";
+}
+
+document.addEventListener("keydown",function(e){
+    if(e.key==="Escape") closeModal();
+});
+
+
+/* =========================
+   CHAT
+========================= */
+
+function answer(button){
+
+    const buttons=document.querySelectorAll(".answers button");
+
+    buttons.forEach(b=>{
+        b.disabled=true;
+        b.style.opacity=".5";
+    });
+
+    button.style.opacity="1";
+
+    if(button.textContent.trim()==="11"){
+
+        button.style.background="rgba(37,229,138,.18)";
+        button.style.borderColor="#28db8a";
+        button.textContent="✓ 11";
+
+        setTimeout(()=>{
+
+            const messages=document.getElementById("messages");
+
+            const msg=document.createElement("div");
+
+            msg.className="msg";
+
+            msg.innerHTML=
+                "To'g'ri! 🎉 <br><br>" +
+                "Avval ko'paytirish bajariladi: " +
+                "3 × 2 = 6. Keyin 5 + 6 = 11. " +
+                "Ajoyib! Keyingi savolga o'tamiz.";
+
+            messages.appendChild(msg);
+
+        },600);
+
+    }else{
+
+        button.style.background="rgba(239,68,68,.12)";
+        button.style.borderColor="rgba(239,68,68,.4)";
+
+        setTimeout(()=>{
+
+            const messages=document.getElementById("messages");
+
+            const msg=document.createElement("div");
+
+            msg.className="msg";
+
+            msg.textContent=
+                "Kichik xato bor. 💡 " +
+                "Amallar tartibiga e'tibor bering: " +
+                "avval ko'paytirish, keyin qo'shish bajariladi.";
+
+            messages.appendChild(msg);
+
+        },600);
+
+    }
+
+}
+
+
+/* =========================
+   DEMO CHAT INPUT
+========================= */
+
+function sendMessage(){
+
+    const input=document.getElementById("chatInput");
+    const value=input.value.trim();
+
+    if(!value) return;
+
+    const messages=document.getElementById("messages");
+
+    const user=document.createElement("div");
+
+    user.className="msg user";
+    user.textContent=value;
+
+    messages.appendChild(user);
+
+    input.value="";
+
+    setTimeout(()=>{
+
+        const ai=document.createElement("div");
+
+        ai.className="msg";
+
+        ai.textContent=
+            "Savolingizni tushundim. 🧠 " +
+            "CoachAI sizga mavzuni bosqichma-bosqich " +
+            "tushuntirishga yordam beradi.";
+
+        messages.appendChild(ai);
+
+        messages.scrollTop=messages.scrollHeight;
+
+    },700);
+
+}
+
+document.getElementById("chatInput")
+.addEventListener("keydown",function(e){
+
+    if(e.key==="Enter"){
+        sendMessage();
+    }
+
+});
+
+
+/* =========================
+   SCROLL REVEAL
+========================= */
+
+const observer=new IntersectionObserver(
+    entries=>{
+
+        entries.forEach(entry=>{
+
+            if(entry.isIntersecting){
+
+                entry.target.classList.add("show");
+
+                observer.unobserve(entry.target);
+
+            }
+
+        });
+
+    },
+    {
+        threshold:.12
+    }
+);
+
+document.querySelectorAll(".reveal")
+.forEach(el=>observer.observe(el));
+
+
+/* =========================
+   NAVBAR SCROLL
+========================= */
+
+window.addEventListener("scroll",()=>{
+
+    const nav=document.querySelector(".nav");
+
+    if(window.scrollY>40){
+
+        nav.style.background="rgba(4,12,9,.94)";
+
+    }else{
+
+        nav.style.background="rgba(5,15,12,.78)";
+
+    }
+
+});
+
+
+/* =========================
+   SMOOTH LINKS
+========================= */
+
+document.querySelectorAll('a[href^="#"]')
+.forEach(link=>{
+
+    link.addEventListener("click",function(e){
+
+        const id=this.getAttribute("href");
+
+        if(id==="#" || !document.querySelector(id)) return;
+
+        e.preventDefault();
+
+        document.querySelector(id)
+        .scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+    });
+
+});
+
+
+/* =========================
+   HERO PARALLAX
+========================= */
+
+const preview=document.querySelector(".app-window");
+
+document.addEventListener("mousemove",function(e){
+
+    if(window.innerWidth<900) return;
+
+    const x=(e.clientX/window.innerWidth-.5)*5;
+    const y=(e.clientY/window.innerHeight-.5)*3;
+
+    preview.style.transform=
+        `perspective(1200px)
+         rotateY(${-4+x}deg)
+         rotateX(${2-y}deg)`;
+
+});
+
+
+/* =========================
+   CLOSE MOBILE MENU
+========================= */
+
+document.querySelectorAll(".nav-links a")
+.forEach(link=>{
+
+    link.addEventListener("click",()=>{
+
+        if(window.innerWidth<=1000){
+
+            document.querySelector(".nav-links").style.display="";
+
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
